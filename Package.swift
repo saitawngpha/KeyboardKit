@@ -20,7 +20,7 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/NoerNova/ISEmojiView.git",
+            url: "https://github.com/saitawngpha/ISEmojiView.git",
                 .upToNextMinor(from: "0.3.4")
         ),
     ],

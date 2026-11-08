@@ -135,7 +135,7 @@ private extension Callouts.ActionCallout.ButtonArea {
             Callouts.ActionCallout.ButtonArea(
                 frame: CGRect(x: 0, y: 0, width: 100, height: 50),
                 buttonCornerRadius: 20
-            ).rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+            ).scaleEffect(x: -1, y: 1)
         }
     }
     .padding()

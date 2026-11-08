@@ -78,10 +78,9 @@ private extension Callouts.ActionCallout {
             buttonCornerRadius: style.buttonCornerRadius(for: keyboardContext)
         )
         .opacity(isPad ? 0 : 1)
-        .rotation3DEffect(
-            isLeading ? .zero : .degrees(180),
-            axis: (x: 0.0, y: 1.0, z: 0.0)
-        )
+        // 2D mirror instead of rotation3DEffect, whose perspective
+        // becomes NaN for zero-size views on iOS 27 and crashes.
+        .scaleEffect(x: isLeading ? 1 : -1, y: 1)
     }
 
     @ViewBuilder

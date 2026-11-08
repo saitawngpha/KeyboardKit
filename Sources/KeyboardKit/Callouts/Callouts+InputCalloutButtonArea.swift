@@ -38,7 +38,10 @@ public extension Callouts.InputCallout {
 
         public var body: some View {
             HStack(alignment: .top, spacing: 0) {
-                calloutCurve.rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                // Mirror with a 2D flip. rotation3DEffect adds a size-based
+                // perspective that becomes NaN for zero-size views on iOS 27
+                // ("CALayer bounds contains NaN"), killing the keyboard.
+                calloutCurve.scaleEffect(x: -1, y: 1)
                 buttonBody
                 calloutCurve
             }

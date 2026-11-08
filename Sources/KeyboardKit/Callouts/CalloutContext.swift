@@ -103,6 +103,19 @@ public extension CalloutContext {
         secondaryActionsIndex = -1
     }
 
+    /// The pressed key's frame, or `.zero` when SwiftUI returns a null,
+    /// infinite or NaN rect (seen on iOS 27 when a key is rebuilt while it
+    /// is pressed). A non-finite frame reaches the callout's CALayer and
+    /// throws "CALayer bounds contains NaN", which kills the keyboard.
+    func safeFrame(in geo: GeometryProxy) -> CGRect {
+        let frame = geo.frame(in: .named(coordinateSpace))
+        guard !frame.isNull, !frame.isInfinite,
+              frame.origin.x.isFinite, frame.origin.y.isFinite,
+              frame.size.width.isFinite, frame.size.height.isFinite
+        else { return .zero }
+        return frame
+    }
+
     /// Update the current input for a certain action.
     func updateInputAction(
         _ action: KeyboardAction?,
@@ -111,7 +124,7 @@ public extension CalloutContext {
         if action?.inputCalloutText == nil { return }
         lastInputUpdate = Date()
         inputAction = action
-        buttonFrame = geo.frame(in: .named(coordinateSpace))
+        buttonFrame = safeFrame(in: geo)
     }
 
     /// Update the secondary actions for a certain action.
@@ -123,7 +136,7 @@ public extension CalloutContext {
     ) {
         let actions = actions ?? _calloutService?.calloutActions(for: action)
         guard let actions else { return }
-        buttonFrame = geo.frame(in: .named(coordinateSpace))
+        buttonFrame = safeFrame(in: geo)
         secondaryActionsAlignment = alignment ?? resolveSecondaryActionAlignment(for: geo)
         secondaryActions = isLeading ? actions : actions.reversed()
         secondaryActionsIndex = secondaryActionStartIndex

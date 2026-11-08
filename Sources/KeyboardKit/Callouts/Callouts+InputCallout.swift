@@ -75,7 +75,7 @@ private extension Callouts.InputCallout {
 private extension Callouts.InputCallout {
 
     var isActive: Bool {
-        isEnabled && calloutContext.inputAction != nil
+        isEnabled && calloutContext.inputAction != nil && calloutContext.buttonFrame != .zero
     }
 
     var isEnabled: Bool {

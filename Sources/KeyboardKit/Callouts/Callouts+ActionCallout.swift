@@ -120,7 +120,7 @@ private extension Callouts.ActionCallout {
     }
 
     var isActive: Bool {
-        !actions.isEmpty
+        !actions.isEmpty && calloutContext.buttonFrame != .zero
     }
 
     var isEmojiCallout: Bool {
